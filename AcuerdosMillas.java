@@ -204,28 +204,33 @@ public class AcuerdosMillas {
         }
         visitados[origen] = origen != destino;
         resultado.push(origen);
-        hayConexionBack(origen, destino, visitados, resultado, exito);
+        hayConexionBack(origen, destino, visitados, resultado, exito, 0);
+        if(!exito.getValor()) resultado.pop();
         return resultado;
 
     }
 
-    void hayConexionBack(int origen, int destino, boolean[] visitados, Stack<Integer> resultado, Booleano exito){
+    void hayConexionBack(int origen, int destino, boolean[] visitados, Stack<Integer> resultado, Booleano exito, int numNodos){
         int v = 0;
         do{
-            if((!visitados[v]) && (!grafoAcuerdos[origen][v])){
-                visitados[v] = true;
-                resultado.push(v);
-                if(v == destino) {
+            if((!visitados[v])){
+                if(numNodos < 4 && grafoAcuerdos[origen][v]){
+                    visitados[v] = true;
+                    numNodos++;
                     resultado.push(v);
-                    exito.setValor(true);
-                }
-                else{
-                    hayConexionBack(v,destino,visitados,resultado,exito);
-                    if(!exito.getValor()){
-                        visitados[v] = false;
-                        resultado.pop();
+                    if(v == destino && numNodos < 4 ) { //es solución??
+                        exito.setValor(true);
+                    }
+                    else{
+                        hayConexionBack(v,destino,visitados,resultado,exito, numNodos);
+                        if(!exito.getValor()){
+                            visitados[v] = false;
+                            numNodos--;
+                            resultado.pop();
+                        }
                     }
                 }
+
             }
             v++;
         }while((!exito.getValor()) && v!=grafoAcuerdos.length);
