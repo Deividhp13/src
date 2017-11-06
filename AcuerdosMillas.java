@@ -196,7 +196,46 @@ public class AcuerdosMillas {
      * LA CABECERA DE ESTE MÉTODO NO DEBE MODIFICARSE
      */
     private Stack<Integer> hayConexion(int origen, int destino){
-        
+        Stack<Integer> resultado = new Stack<Integer>();
+        Booleano exito = new Booleano(false);
+        boolean[] visitados = new boolean[grafoAcuerdos.length];
+        for(int i = 0; i < grafoAcuerdos.length; i++){
+            visitados[i] = false;
+        }
+        visitados[origen] = origen != destino;
+        resultado.push(origen);
+        hayConexionBack(origen, destino, visitados, resultado, exito, 0);
+        if(!exito.getValor()) resultado.pop();
+        return resultado;
+
     }
+
+    void hayConexionBack(int origen, int destino, boolean[] visitados, Stack<Integer> resultado, Booleano exito, int numNodos){
+        int v = 0;
+        do{
+            if((!visitados[v])){
+                if(numNodos < 4 && grafoAcuerdos[origen][v]){
+                    visitados[v] = true;
+                    numNodos++;
+                    resultado.push(v);
+                    if(v == destino && numNodos < 4 ) { //es solución??
+                        exito.setValor(true);
+                    }
+                    else{
+                        hayConexionBack(v,destino,visitados,resultado,exito, numNodos);
+                        if(!exito.getValor()){
+                            visitados[v] = false;
+                            numNodos--;
+                            resultado.pop();
+                        }
+                    }
+                }
+
+            }
+            v++;
+        }while((!exito.getValor()) && v!=grafoAcuerdos.length);
+
+    }
+
 
 }
