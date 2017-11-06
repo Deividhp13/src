@@ -209,7 +209,12 @@ public class AcuerdosMillas {
         return resultado;
 
     }
-
+    /**
+     * Dado el nodo orígen de la búsqueda, el nodo destino, un array de nodos visitados, una pila, un booleano que indica si hemos tenido éxito en la búsqueda o no,
+     * y un número que indica el número de nodos que hay en la pila, este método obtiene mediante backtracking una pila que tiene como base el nodo inicial, en medio
+     * un máximo de dos nodos intermedios, y en la cima el nodo destino (los identificadores de los nodos). En caso de no existir acuerdo entre los nodos, se devuelve una
+     * pila vacía.
+     */
     void hayConexionBack(int origen, int destino, boolean[] visitados, Stack<Integer> resultado, Booleano exito, int numNodos){
         int v = 0;
         do{
@@ -218,7 +223,7 @@ public class AcuerdosMillas {
                     visitados[v] = true;
                     numNodos++;
                     resultado.push(v);
-                    if(v == destino && numNodos < 4 ) { //es solución??
+                    if(v == destino && numNodos < 4 ) { //es solución
                         exito.setValor(true);
                     }
                     else{
